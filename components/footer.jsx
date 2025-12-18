@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-gray-800/50 py-8 px-6 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
       <div className="flex items-center gap-6 text-sm text-gray-400">
-        Made by Tech Brothers
+        Made by Om Sharma
       </div>
 
       <div className="flex gap-4 items-center">
@@ -21,7 +21,7 @@ const Footer = () => {
         >
           <Instagram className="w-5 h-5" />
         </a>
-        <a href="https://x.com/my_profile" className="text-gray-400">
+        <a href="https://x.com/bugdev19" className="text-gray-400">
           <Twitter className="w-5 h-5" />
         </a>
       </div>

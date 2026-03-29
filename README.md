@@ -62,6 +62,5 @@ CRON_SECRET=your_cron_secret
 ```
 
 **Om Sharma**  
-
 Indie developer building useful, real-world products.  
 🔗 [LinkedIn](https://www.linkedin.com/in/om-sharma1905/)

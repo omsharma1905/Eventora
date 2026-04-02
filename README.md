@@ -10,7 +10,6 @@ Discover events that inspire your world.
 * Explore tech meetups, workshops, concerts, and more
 * Works seamlessly on desktop and mobile
 
-
 That’s it.
 
 ## Why I built this

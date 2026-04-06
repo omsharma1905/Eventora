@@ -12,6 +12,7 @@ Discover events that inspire your world.
 
 That’s it.
 
+
 ## Why I built this
 
 I wanted a clean and modern way to discover meaningful events without jumping across multiple platforms.

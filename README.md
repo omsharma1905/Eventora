@@ -61,7 +61,6 @@ GEMINI_API_KEY=your_gemini_api_key
 CRON_SECRET=your_cron_secret
 ```
 
-
 **Om Sharma**  
 Indie developer building useful, real-world products.  
 🔗 [LinkedIn](https://www.linkedin.com/in/om-sharma1905/)

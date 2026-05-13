@@ -73,7 +73,6 @@ export default function MyTicketsPage() {
           </p>
         </div>
 
-        {/* Upcoming Tickets */}
         {upcomingTickets?.length > 0 && (
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-4">Upcoming Events</h2>
@@ -92,7 +91,6 @@ export default function MyTicketsPage() {
           </div>
         )}
 
-        {/* Past Tickets */}
         {pastTickets?.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold mb-4">Past Events</h2>
@@ -110,7 +108,6 @@ export default function MyTicketsPage() {
           </div>
         )}
 
-        {/* Empty State */}
         {!upcomingTickets?.length && !pastTickets?.length && (
           <Card className="p-12 text-center">
             <div className="max-w-md mx-auto space-y-4">
@@ -129,7 +126,6 @@ export default function MyTicketsPage() {
         )}
       </div>
 
-      {/* QR Code Modal */}
       {selectedTicket && (
         <Dialog
           open={!!selectedTicket}

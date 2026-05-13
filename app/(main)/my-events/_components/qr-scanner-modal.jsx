@@ -37,7 +37,6 @@ export default function QRScannerModal({ isOpen, onClose }) {
     }
   };
 
-  // Initialize QR Scanner
   useEffect(() => {
     let scanner = null;
     let mounted = true;
@@ -48,7 +47,6 @@ export default function QRScannerModal({ isOpen, onClose }) {
       try {
         console.log("Initializing QR scanner...");
 
-        // Check camera permissions first
         try {
           await navigator.mediaDevices.getUserMedia({ video: true });
           console.log("Camera permission granted");
@@ -58,7 +56,6 @@ export default function QRScannerModal({ isOpen, onClose }) {
           return;
         }
 
-        // Dynamically import the library
         const { Html5QrcodeScanner } = await import("html5-qrcode");
 
         if (!mounted) return;
@@ -73,7 +70,7 @@ export default function QRScannerModal({ isOpen, onClose }) {
             aspectRatio: 1.0,
             showTorchButtonIfSupported: true,
             videoConstraints: {
-              facingMode: "environment", // Use back camera on mobile
+              facingMode: "environment",
             },
           },
           /* verbose= */ false
@@ -88,7 +85,6 @@ export default function QRScannerModal({ isOpen, onClose }) {
         };
 
         const onScanError = (error) => {
-          // Only log actual errors, not "no QR code found" messages
           if (error && !error.includes("NotFoundException")) {
             console.debug("Scan error:", error);
           }

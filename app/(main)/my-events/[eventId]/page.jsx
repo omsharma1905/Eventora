@@ -43,17 +43,14 @@ export default function EventDashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showQRScanner, setShowQRScanner] = useState(false);
 
-  // Fetch event dashboard data
   const { data: dashboardData, isLoading } = useConvexQuery(
     api.dashboard.getEventDashboard,
     { eventId }
   );
 
-  // Fetch registrations
   const { data: registrations, isLoading: loadingRegistrations } =
     useConvexQuery(api.registrations.getEventRegistrations, { eventId });
 
-  // Delete event mutation
   const { mutate: deleteEvent, isLoading: isDeleting } = useConvexMutation(
     api.dashboard.deleteEvent
   );
@@ -124,7 +121,6 @@ export default function EventDashboardPage() {
 
   const { event, stats } = dashboardData;
 
-  // Filter registrations based on active tab and search
   const filteredRegistrations = registrations?.filter((reg) => {
     const matchesSearch =
       reg.attendeeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -143,7 +139,6 @@ export default function EventDashboardPage() {
   return (
     <div className="min-h-screen pb-20 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Navigation */}
         <div className="mb-6">
           <Button
             variant="ghost"
@@ -167,7 +162,6 @@ export default function EventDashboardPage() {
           </div>
         )}
 
-        {/* Event Header */}
         <div className="flex flex-col gap-5 sm:flex-row items-start justify-between mb-4">
           <div className="flex-1">
             <h1 className="text-3xl font-bold mb-3">{event.title}</h1>
@@ -214,11 +208,9 @@ export default function EventDashboardPage() {
           </div>
         </div>
 
-        {/* Quick Actions - Show QR Scanner if event is today */}
         {stats.isEventToday && !stats.isEventPast && (
           <Button
             size="lg"
-            // variant="outline"
             className="mb-8 w-full gap-2 h-10 bg-linear-to-r from-orange-500 via-pink-500 to-red-500 text-white hover:scale-[1.02]"
             onClick={() => setShowQRScanner(true)}
           >
@@ -227,7 +219,6 @@ export default function EventDashboardPage() {
           </Button>
         )}
 
-        {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
           <Card className="py-0">
             <CardContent className="p-6 flex items-center gap-3">
@@ -302,10 +293,8 @@ export default function EventDashboardPage() {
           </Card>
         </div>
 
-        {/* Attendee Management */}
         <h2 className="text-2xl font-bold mb-4">Attendee Management</h2>
 
-        {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-4">
             <TabsTrigger value="all">
@@ -319,7 +308,6 @@ export default function EventDashboardPage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Search and Actions */}
           <div className="flex gap-3 mb-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -340,7 +328,6 @@ export default function EventDashboardPage() {
             </Button>
           </div>
 
-          {/* Attendee List */}
           <TabsContent value={activeTab} className="space-y-3 mt-0">
             {filteredRegistrations && filteredRegistrations.length > 0 ? (
               filteredRegistrations.map((registration) => (
@@ -358,7 +345,6 @@ export default function EventDashboardPage() {
         </Tabs>
       </div>
 
-      {/* QR Scanner Modal */}
       {showQRScanner && (
         <QRScannerModal
           isOpen={showQRScanner}

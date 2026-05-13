@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import { CheckCircle, Circle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-// Attendee Card Component
 export function AttendeeCard({ registration }) {
   const { mutate: checkInAttendee, isLoading } = useConvexMutation(
     api.registrations.checkInAttendee

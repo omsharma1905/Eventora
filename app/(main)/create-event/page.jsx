@@ -113,15 +113,13 @@ export default function CreateEventPage() {
     if (!st) return [];
     return City.getCitiesOfState("IN", st.isoCode);
   }, [selectedState, indianStates]);
-
-  // Color presets - show all for Pro, only default for Free
+  
   const colorPresets = [
-    "#1e3a8a", // Default color (always available)
+    "#1e3a8a",
     ...(hasPro ? ["#4c1d95", "#065f46", "#92400e", "#7f1d1d", "#831843"] : []),
   ];
 
   const handleColorClick = (color) => {
-    // If not default color and user doesn't have Pro
     if (color !== "#1e3a8a" && !hasPro) {
       setUpgradeReason("color");
       setShowUpgradeModal(true);
@@ -152,14 +150,12 @@ export default function CreateEventPage() {
         return;
       }
 
-      // Check event limit for Free users
       if (!hasPro && currentUser?.freeEventsCreated >= 1) {
         setUpgradeReason("limit");
         setShowUpgradeModal(true);
         return;
       }
 
-      // Check if trying to use custom color without Pro
       if (data.themeColor !== "#1e3a8a" && !hasPro) {
         setUpgradeReason("color");
         setShowUpgradeModal(true);
@@ -234,9 +230,9 @@ export default function CreateEventPage() {
                 src={coverImage}
                 alt="Cover"
                 className="w-full h-full object-cover"
-                width={500} // Adjust width as needed
-                height={500} // Adjust height as needed
-                priority // Optional: prioritize loading this image
+                width={500}
+                height={500}
+                priority
               />
             ) : (
               <span className="opacity-60 text-sm">
@@ -301,7 +297,6 @@ export default function CreateEventPage() {
 
         {/* RIGHT: Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Title */}
           <div>
             <Input
               {...register("title")}
@@ -315,7 +310,6 @@ export default function CreateEventPage() {
             )}
           </div>
 
-          {/* Date + Time */}
           <div className="grid grid-cols-2 gap-6">
             {/* Start */}
             <div className="space-y-2">
@@ -352,7 +346,6 @@ export default function CreateEventPage() {
               )}
             </div>
 
-            {/* End */}
             <div className="space-y-2">
               <Label className="text-sm">End</Label>
               <div className="grid grid-cols-[1fr_auto] gap-2">
@@ -389,7 +382,6 @@ export default function CreateEventPage() {
             </div>
           </div>
 
-          {/* Category */}
           <div className="space-y-2">
             <Label className="text-sm">Category</Label>
             <Controller
@@ -415,7 +407,6 @@ export default function CreateEventPage() {
             )}
           </div>
 
-          {/* Location */}
           <div className="space-y-3">
             <Label className="text-sm">Location</Label>
             <div className="grid grid-cols-2 gap-4">
@@ -491,7 +482,6 @@ export default function CreateEventPage() {
             </div>
           </div>
 
-          {/* Description */}
           <div className="space-y-2">
             <Label>Description</Label>
             <Textarea
@@ -506,7 +496,6 @@ export default function CreateEventPage() {
             )}
           </div>
 
-          {/* Ticketing */}
           <div className="space-y-3">
             <Label className="text-sm">Tickets</Label>
             <div className="flex items-center gap-6">
@@ -534,7 +523,6 @@ export default function CreateEventPage() {
             )}
           </div>
 
-          {/* Capacity */}
           <div className="space-y-2">
             <Label className="text-sm">Capacity</Label>
             <Input
@@ -547,7 +535,6 @@ export default function CreateEventPage() {
             )}
           </div>
 
-          {/* Submit */}
           <Button
             type="submit"
             disabled={isLoading}
@@ -564,7 +551,6 @@ export default function CreateEventPage() {
         </form>
       </div>
 
-      {/* Unsplash Picker */}
       {showImagePicker && (
         <UnsplashImagePicker
           isOpen={showImagePicker}
@@ -576,7 +562,6 @@ export default function CreateEventPage() {
         />
       )}
 
-      {/* Upgrade Modal */}
       <UpgradeModal
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}

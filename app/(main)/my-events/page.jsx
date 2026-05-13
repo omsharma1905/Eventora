@@ -32,7 +32,6 @@ export default function MyEventsPage() {
     }
   };
 
-  // Navigate to event dashboard instead of event detail
   const handleEventClick = (eventId) => {
     router.push(`/my-events/${eventId}`);
   };

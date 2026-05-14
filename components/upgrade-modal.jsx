@@ -28,7 +28,6 @@ export default function UpgradeModal({ isOpen, onClose, trigger = "limit" }) {
           </DialogDescription>
         </DialogHeader>
 
-        {/* Pricing Cards */}
         <PricingTable
           checkoutProps={{
             appearance: {
@@ -41,7 +40,6 @@ export default function UpgradeModal({ isOpen, onClose, trigger = "limit" }) {
           }}
         />
 
-        {/* Footer */}
         <div className="flex gap-3">
           <Button variant="outline" onClick={onClose} className="flex-1">
             Maybe Later

@@ -39,12 +39,10 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }) {
     api.users.completeOnboarding
   );
 
-  // Get Indian states
   const indianStates = useMemo(() => {
     return State.getStatesOfCountry("IN");
   }, []);
 
-  // Get cities based on selected state
   const cities = useMemo(() => {
     if (!location.state) return [];
     const selectedState = indianStates.find((s) => s.name === location.state);
@@ -124,7 +122,6 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }) {
         </DialogHeader>
 
         <div className="py-4">
-          {/* Step 1: Select Interests */}
           {step === 1 && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[400px] overflow-y-auto p-2">
@@ -161,7 +158,6 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }) {
             </div>
           )}
 
-          {/* Step 2: Location */}
           {step === 2 && (
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
@@ -236,7 +232,6 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }) {
           )}
         </div>
 
-        {/* Actions */}
         <div className="flex gap-3 pt-4">
           {step > 1 && (
             <Button

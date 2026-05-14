@@ -113,7 +113,6 @@ export default function SearchLocationBar() {
 
   return (
     <div className="flex items-center">
-      {/* Search Bar */}
       <div className="relative flex w-full" ref={searchRef}>
         <div className="flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -127,7 +126,6 @@ export default function SearchLocationBar() {
           />
         </div>
 
-        {/* Search Results */}
         {showSearchResults && (
           <div className="absolute top-full mt-2 w-96 bg-background border rounded-lg shadow-lg z-50 max-h-[400px] overflow-y-auto">
             {searchLoading ? (
@@ -178,7 +176,6 @@ export default function SearchLocationBar() {
         )}
       </div>
 
-      {/* State Select */}
       <Select
         value={selectedState}
         onValueChange={(value) => {
@@ -190,7 +187,6 @@ export default function SearchLocationBar() {
           <SelectValue placeholder="State" />
         </SelectTrigger>
         <SelectContent>
-          {/* <SelectItem value="">State</SelectItem> */}
           {indianStates.map((state) => (
             <SelectItem key={state.isoCode} value={state.name}>
               {state.name}
@@ -199,7 +195,6 @@ export default function SearchLocationBar() {
         </SelectContent>
       </Select>
 
-      {/* City Select */}
       <Select
         value={selectedCity}
         onValueChange={(value) => {
@@ -214,7 +209,6 @@ export default function SearchLocationBar() {
           <SelectValue placeholder="City" />
         </SelectTrigger>
         <SelectContent>
-          {/* <SelectItem value="">City</SelectItem> */}
           {cities.map((city) => (
             <SelectItem key={city.name} value={city.name}>
               {city.name}

@@ -1,6 +1,5 @@
 import { internalMutation } from "./_generated/server";
 
-// Sample events data with Unsplash images
 const SAMPLE_EVENTS = [
   {
     title: "React 19 Workshop: Master the New Features",
@@ -628,7 +627,6 @@ Healthy snacks and herbal teas included.`,
   },
 ];
 
-// Helper functions
 function getRandomFutureDate(minDays = 7, maxDays = 90) {
   const now = Date.now();
   const randomDays = Math.floor(Math.random() * (maxDays - minDays) + minDays);
@@ -650,15 +648,12 @@ function generateSlug(title) {
   );
 }
 
-// RUN THIS DIRECTLY FROM CONVEX DASHBOARD
-// Go to Dashboard > Functions > seed:run > Run
+
 export const run = internalMutation({
   handler: async (ctx) => {
-    // First, get or create a default organizer user
     let organizer = await ctx.db.query("users").first();
 
     if (!organizer) {
-      // Create a default organizer if no users exist
       const organizerId = await ctx.db.insert("users", {
         email: "organizer@eventhub.com",
         tokenIdentifier: "seed-user-token",
@@ -714,7 +709,6 @@ export const run = internalMutation({
   },
 });
 
-// Optional: Clear all events
 export const clear = internalMutation({
   handler: async (ctx) => {
     const events = await ctx.db.query("events").collect();

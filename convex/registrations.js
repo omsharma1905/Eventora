@@ -2,12 +2,10 @@ import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// Generate unique QR code ID
 function generateQRCode() {
   return `EVT-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 }
 
-// Register for an event
 export const registerForEvent = mutation({
   args: {
     eventId: v.id("events"),
@@ -22,12 +20,10 @@ export const registerForEvent = mutation({
       throw new Error("Event not found");
     }
 
-    // Check if event is full
     if (event.registrationCount >= event.capacity) {
       throw new Error("Event is full");
     }
 
-    // Check if user already registered
     const existingRegistration = await ctx.db
       .query("registrations")
       .withIndex("by_event_user", (q) =>
@@ -39,7 +35,6 @@ export const registerForEvent = mutation({
       throw new Error("You are already registered for this event");
     }
 
-    // Create registration
     const qrCode = generateQRCode();
     const registrationId = await ctx.db.insert("registrations", {
       eventId: args.eventId,
@@ -52,7 +47,6 @@ export const registerForEvent = mutation({
       registeredAt: Date.now(),
     });
 
-    // Update event registration count
     await ctx.db.patch(args.eventId, {
       registrationCount: event.registrationCount + 1,
     });
@@ -61,7 +55,6 @@ export const registerForEvent = mutation({
   },
 });
 
-// Check if user is registered for an event
 export const checkRegistration = query({
   args: { eventId: v.id("events") },
   handler: async (ctx, args) => {
@@ -80,7 +73,6 @@ export const checkRegistration = query({
   },
 });
 
-// Get user's registrations (tickets)
 export const getMyRegistrations = query({
   handler: async (ctx) => {
     const user = await ctx.runQuery(internal.users.getCurrentUser);
@@ -91,7 +83,6 @@ export const getMyRegistrations = query({
       .order("desc")
       .collect();
 
-    // Fetch event details for each registration
     const registrationsWithEvents = await Promise.all(
       registrations.map(async (reg) => {
         const event = await ctx.db.get(reg.eventId);
@@ -106,7 +97,6 @@ export const getMyRegistrations = query({
   },
 });
 
-// Cancel registration
 export const cancelRegistration = mutation({
   args: { registrationId: v.id("registrations") },
   handler: async (ctx, args) => {
@@ -117,7 +107,6 @@ export const cancelRegistration = mutation({
       throw new Error("Registration not found");
     }
 
-    // Check if user owns this registration
     if (registration.userId !== user._id) {
       throw new Error("You are not authorized to cancel this registration");
     }
@@ -127,12 +116,10 @@ export const cancelRegistration = mutation({
       throw new Error("Event not found");
     }
 
-    // Update registration status
     await ctx.db.patch(args.registrationId, {
       status: "cancelled",
     });
 
-    // Decrement event registration count
     if (event.registrationCount > 0) {
       await ctx.db.patch(registration.eventId, {
         registrationCount: event.registrationCount - 1,
@@ -143,7 +130,6 @@ export const cancelRegistration = mutation({
   },
 });
 
-// Get registrations for an event (for organizers)
 export const getEventRegistrations = query({
   args: { eventId: v.id("events") },
   handler: async (ctx, args) => {
@@ -154,7 +140,6 @@ export const getEventRegistrations = query({
       throw new Error("Event not found");
     }
 
-    // Check if user is the organizer
     if (event.organizerId !== user._id) {
       throw new Error("You are not authorized to view registrations");
     }
@@ -168,7 +153,6 @@ export const getEventRegistrations = query({
   },
 });
 
-// Check-in attendee with QR code
 export const checkInAttendee = mutation({
   args: { qrCode: v.string() },
   handler: async (ctx, args) => {
@@ -188,12 +172,10 @@ export const checkInAttendee = mutation({
       throw new Error("Event not found");
     }
 
-    // Check if user is the organizer
     if (event.organizerId !== user._id) {
       throw new Error("You are not authorized to check in attendees");
     }
 
-    // Check if already checked in
     if (registration.checkedIn) {
       return {
         success: false,
@@ -202,7 +184,6 @@ export const checkInAttendee = mutation({
       };
     }
 
-    // Check in
     await ctx.db.patch(registration._id, {
       checkedIn: true,
       checkedInAt: Date.now(),

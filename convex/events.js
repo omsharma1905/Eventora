@@ -3,7 +3,6 @@ import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-// Create a new event
 export const createEvent = mutation({
   args: {
     title: v.string(),
@@ -31,14 +30,12 @@ export const createEvent = mutation({
       const user = await ctx.runQuery(internal.users.getCurrentUser);
       const hasPro = user?.hasCompletedOnboarding ? "true" : "false";
 
-      // SERVER-SIDE CHECK: Verify event limit for Free users
       if (!hasPro && user.freeEventsCreated >= 1) {
         throw new Error(
           "Free event limit reached. Please upgrade to Pro to create more events."
         );
       }
 
-      // SERVER-SIDE CHECK: Verify custom color usage
       const defaultColor = "#1e3a8a";
       if (!hasPro && args.themeColor && args.themeColor !== defaultColor) {
         throw new Error(
@@ -46,19 +43,16 @@ export const createEvent = mutation({
         );
       }
 
-      // Force default color for Free users
       const themeColor = hasPro ? args.themeColor : defaultColor;
 
-      // Generate slug from title
       const slug = args.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/(^-|-$)/g, "");
 
-      // Create event
       const eventId = await ctx.db.insert("events", {
         ...args,
-        themeColor, // Use validated color
+        themeColor,
         slug: `${slug}-${Date.now()}`,
         organizerId: user._id,
         organizerName: user.name,
@@ -67,7 +61,6 @@ export const createEvent = mutation({
         updatedAt: Date.now(),
       });
 
-      // Update user's free event count
       await ctx.db.patch(user._id, {
         freeEventsCreated: user.freeEventsCreated + 1,
       });
@@ -79,7 +72,6 @@ export const createEvent = mutation({
   },
 });
 
-// Get event by slug
 export const getEventBySlug = query({
   args: { slug: v.string() },
   handler: async (ctx, args) => {
@@ -92,7 +84,6 @@ export const getEventBySlug = query({
   },
 });
 
-// Get events by organizer
 export const getMyEvents = query({
   handler: async (ctx) => {
     const user = await ctx.runQuery(internal.users.getCurrentUser);
@@ -107,7 +98,6 @@ export const getMyEvents = query({
   },
 });
 
-// Delete event
 export const deleteEvent = mutation({
   args: { eventId: v.id("events") },
   handler: async (ctx, args) => {
@@ -118,12 +108,10 @@ export const deleteEvent = mutation({
       throw new Error("Event not found");
     }
 
-    // Check if user is the organizer
     if (event.organizerId !== user._id) {
       throw new Error("You are not authorized to delete this event");
     }
 
-    // Delete all registrations for this event
     const registrations = await ctx.db
       .query("registrations")
       .withIndex("by_event", (q) => q.eq("eventId", args.eventId))
@@ -133,10 +121,8 @@ export const deleteEvent = mutation({
       await ctx.db.delete(registration._id);
     }
 
-    // Delete the event
     await ctx.db.delete(args.eventId);
 
-    // Update free event count if it was a free event
     if (event.ticketType === "free" && user.freeEventsCreated > 0) {
       await ctx.db.patch(user._id, {
         freeEventsCreated: user.freeEventsCreated - 1,
